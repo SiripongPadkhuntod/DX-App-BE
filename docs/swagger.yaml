@@ -1,0 +1,179 @@
+basePath: /
+definitions:
+  github_com_youruser_dexter-transport_internal_app_handler_dto.CreateTaskRequest:
+    properties:
+      description:
+        type: string
+      title:
+        type: string
+    required:
+    - title
+    type: object
+  github_com_youruser_dexter-transport_internal_app_handler_dto.HealthResponse:
+    properties:
+      code:
+        type: string
+      health_id:
+        type: string
+      message:
+        type: string
+      service_name:
+        type: string
+      status:
+        type: string
+    type: object
+  github_com_youruser_dexter-transport_internal_app_handler_dto.TaskListResponse:
+    properties:
+      tasks:
+        items:
+          $ref: '#/definitions/github_com_youruser_dexter-transport_internal_app_handler_dto.TaskResponse'
+        type: array
+    type: object
+  github_com_youruser_dexter-transport_internal_app_handler_dto.TaskResponse:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      status:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  github_com_youruser_dexter-transport_internal_app_handler_dto.UpdateTaskRequest:
+    properties:
+      description:
+        type: string
+      status:
+        type: string
+      title:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server for Dexter Transport.
+  title: Dexter Transport API
+  version: "1.0"
+paths:
+  /api/v1/health:
+    get:
+      consumes:
+      - application/json
+      description: Get the health status of the service
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_youruser_dexter-transport_internal_app_handler_dto.HealthResponse'
+      summary: Show service health status
+      tags:
+      - Health
+  /api/v1/tasks:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_youruser_dexter-transport_internal_app_handler_dto.TaskListResponse'
+      summary: List all tasks
+      tags:
+      - Task
+    post:
+      consumes:
+      - application/json
+      description: Create a new task with title and description
+      parameters:
+      - description: Create Task Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_youruser_dexter-transport_internal_app_handler_dto.CreateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_youruser_dexter-transport_internal_app_handler_dto.TaskResponse'
+      summary: Create a new task
+      tags:
+      - Task
+  /api/v1/tasks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a task from the system
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Delete a task
+      tags:
+      - Task
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about a specific task
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_youruser_dexter-transport_internal_app_handler_dto.TaskResponse'
+      summary: Get a task by ID
+      tags:
+      - Task
+    put:
+      consumes:
+      - application/json
+      description: Update a task's title, description, or status
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update Task Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_youruser_dexter-transport_internal_app_handler_dto.UpdateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_youruser_dexter-transport_internal_app_handler_dto.TaskResponse'
+      summary: Update a task
+      tags:
+      - Task
+swagger: "2.0"

@@ -1,0 +1,22 @@
+# Binaries
+bin/
+tmp/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# IDE
+.vscode/
+
+# Environment
+config/local.env
+
+# Logs
+*.log
+
+# Dependency
+vendor/
+
+# OS
+.DS_Store
