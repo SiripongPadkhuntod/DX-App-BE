@@ -233,7 +233,7 @@ const docTemplate = `{
                 "tasks": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_youruser_dexter-transport_internal_app_handler_dto.TaskResponse"
+                        "$ref": "#/definitions/github_com_youruser_dexter-transport_pkg_model_v1.Task"
                     }
                 }
             }
@@ -271,6 +271,29 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_youruser_dexter-transport_pkg_model_v1.Task": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
