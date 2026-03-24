@@ -3,9 +3,12 @@ package servicesconstant
 type SuccessMessage string
 
 const (
-	SuccessStatus  = "success"
-	SuccessCode    = "S000"
-	SuccessMessageValue SuccessMessage = "The operation was successful"
-	HealthyStatus  = "healthy"
-	HealthyMessage = "Service is running smoothly"
+	SUCCESS_MESSAGE_VALUE SuccessMessage = "The operation was successful"
+	HEALTHY_STATUS        SuccessMessage = "healthy"
+	HEALTHY_MESSAGE       SuccessMessage = "Service is running smoothly"
+)
+
+const (
+	SUCCESS_STATUS = "success"
+	SUCCESS_CODE   = "S000"
 )
