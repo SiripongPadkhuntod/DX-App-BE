@@ -26,7 +26,7 @@ definitions:
     properties:
       tasks:
         items:
-          $ref: '#/definitions/github_com_youruser_dexter-transport_internal_app_handler_dto.TaskResponse'
+          $ref: '#/definitions/github_com_youruser_dexter-transport_pkg_model_v1.Task'
         type: array
     type: object
   github_com_youruser_dexter-transport_internal_app_handler_dto.TaskResponse:
@@ -51,6 +51,21 @@ definitions:
       status:
         type: string
       title:
+        type: string
+    type: object
+  github_com_youruser_dexter-transport_pkg_model_v1.Task:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      status:
+        type: string
+      title:
+        type: string
+      updated_at:
         type: string
     type: object
 host: localhost:8080

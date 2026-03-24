@@ -5,6 +5,7 @@ import (
 
 	"github.com/youruser/dexter-transport/internal/app/domain"
 	handlerdto "github.com/youruser/dexter-transport/internal/app/handler/dto"
+	modelV1 "github.com/youruser/dexter-transport/pkg/model/v1"
 )
 
 func (s *service) CreateTask(ctx context.Context, req handlerdto.CreateTaskRequest) (*handlerdto.TaskResponse, error) {
@@ -32,10 +33,10 @@ func (s *service) ListTasks(ctx context.Context) (*handlerdto.TaskListResponse, 
 	if err != nil {
 		return nil, err
 	}
-	
-	dtoTasks := make([]handlerdto.TaskResponse, len(tasks))
+
+	dtoTasks := make([]modelV1.Task, len(tasks))
 	for i, t := range tasks {
-		dtoTasks[i] = *mapTaskDomainToDTO(&t)
+		dtoTasks[i] = mapTaskDomainToDTO(&t).Task
 	}
 	return &handlerdto.TaskListResponse{Tasks: dtoTasks}, nil
 }
@@ -70,11 +71,13 @@ func (s *service) DeleteTask(ctx context.Context, id int) error {
 
 func mapTaskDomainToDTO(d *domain.Task) *handlerdto.TaskResponse {
 	return &handlerdto.TaskResponse{
-		ID:          d.ID,
-		Title:       d.Title,
-		Description: d.Description,
-		Status:      d.Status,
-		CreatedAt:   d.CreatedAt,
-		UpdatedAt:   d.UpdatedAt,
+		Task: modelV1.Task{
+			ID:          d.ID,
+			Title:       d.Title,
+			Description: d.Description,
+			Status:      d.Status,
+			CreatedAt:   d.CreatedAt,
+			UpdatedAt:   d.UpdatedAt,
+		},
 	}
 }
