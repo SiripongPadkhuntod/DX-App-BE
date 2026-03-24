@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/gin-gonic/gin"
-	servicesconstant "github.com/youruser/dexter-transport/internal/constant"
 	handlerdto "github.com/youruser/dexter-transport/internal/app/handler/dto"
+	servicesconstant "github.com/youruser/dexter-transport/internal/constant"
 	"github.com/youruser/dexter-transport/pkg/v1/dto"
 )
 
@@ -25,26 +25,26 @@ func (h *handler) Health(c *gin.Context) func(ctx context.Context, _ dto.EmptySt
 			if err != nil {
 				// ถ้ามี error เกิดขึ้น ให้ส่ง response กลับไปว่าไม่ผ่าน
 				return &handlerdto.HealthResponse{
-					Status:  servicesconstant.UnhealthyStatus,
-					Code:    servicesconstant.DatabaseErrorCode,
+					Status:  servicesconstant.UNHEALTHY_STATUS,
+					Code:    servicesconstant.DATABASE_ERROR_CODE,
 					Message: err.Error(),
 				}, nil
 			}
 
 			// ถ้าทุกอย่างปกติ ให้ส่ง response กลับไปว่า healthy พร้อมข้อมูลจาก DB
 			return &handlerdto.HealthResponse{
-				Status:      servicesconstant.HealthyStatus,
-				Code:        servicesconstant.SuccessCode,
-				Message:     servicesconstant.HealthyMessage,
+				Status:      string(servicesconstant.HEALTHY_STATUS),
+				Code:        servicesconstant.SUCCESS_CODE,
+				Message:     string(servicesconstant.HEALTHY_MESSAGE),
 				HealthId:    id,
 				ServiceName: serviceName,
 			}, nil
 		}
 
 		return &handlerdto.HealthResponse{
-			Status:  servicesconstant.HealthyStatus,
-			Code:    servicesconstant.SuccessCode,
-			Message: servicesconstant.HealthyMessage,
+			Status:  string(servicesconstant.HEALTHY_STATUS),
+			Code:    servicesconstant.SUCCESS_CODE,
+			Message: string(servicesconstant.HEALTHY_MESSAGE),
 		}, nil
 	}
 }

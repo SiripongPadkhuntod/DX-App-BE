@@ -19,7 +19,7 @@ func BindReqJson200Resp[T any, R any](c *gin.Context, handler func(ctx context.C
 		// พยายาม bind JSON ถ้ามี error ให้ส่ง 400
 		if err := c.ShouldBindJSON(&req); err != nil {
 			// หมายเหตุ: บางครั้งกรณี body ว่างแต่อยากให้ผ่าน ก็สามารถปรับ logic ตรงนี้ได้
-			c.JSON(400, gin.H{"error": servicesconstant.InvalidRequestBodyMessage + ": " + err.Error()})
+			c.JSON(400, gin.H{"error": servicesconstant.INVALID_REQUEST_BODY_MESSAGE + ": " + err.Error()})
 			return
 		}
 	}
