@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "swag-init",
+            "type": "shell",
+            "command": "swag init -g cmd/server/main.go --parseDependency --parseInternal",
+            "problemMatcher": [],
+            "group": "build",
+            "detail": "Generate Swagger documentation including dependencies"
+        },
+        {
+            "label": "go-build",
+            "type": "shell",
+            "command": "go build -o tmp/main cmd/server/main.go",
+            "problemMatcher": [
+                "$go"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Build the Go application"
+        }
+    ]
+}

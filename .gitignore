@@ -7,7 +7,7 @@ tmp/
 *.dylib
 
 # IDE
-.vscode/
+# .vscode/
 
 # Environment
 config/local.env
