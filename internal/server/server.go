@@ -47,10 +47,13 @@ func loadConfig() {
 			os.Setenv(item.Name, item.Value)
 		}
 	} else {
-		// Default to local.env
+		// Default to local.env + secret.env
 		log.Println("Loading configuration from local.env")
 		if err := godotenv.Load("config/local.env"); err != nil {
 			log.Println("Warning: local.env file not found, using default environment variables")
+		}
+		if err := godotenv.Load("config/secret.env"); err != nil {
+			log.Println("Warning: secret.env file not found, using default environment variables")
 		}
 	}
 }
@@ -94,6 +97,7 @@ func (s *Server) Run() {
 		User:     getEnv("DB_USER", "user"),
 		Password: getEnv("DB_PASSWORD", "password"),
 		DBName:   getEnv("DB_NAME", "dexter_db"),
+		SSLMode:  getEnv("DB_SSL_MODE", "disable"),
 	})
 	if err != nil {
 		log.Fatalf("Failed to initialize database client: %v", err)

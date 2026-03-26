@@ -15,17 +15,24 @@ type PostgresConfig struct {
 	User     string
 	Password string
 	DBName   string
+	SSLMode  string // "require", "disable", "verify-full", etc.
 }
 
 func NewPostgresClient(cfg PostgresConfig) (*sql.DB, error) {
 
+	sslMode := cfg.SSLMode
+	if sslMode == "" {
+		sslMode = "require" // default: safe for production/remote DBs
+	}
+
 	connStr := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=require",
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cfg.Host,
 		cfg.Port,
 		cfg.User,
 		cfg.Password,
 		cfg.DBName,
+		sslMode,
 	)
 
 	db, err := sql.Open("postgres", connStr)
