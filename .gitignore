@@ -10,7 +10,7 @@ tmp/
 # .vscode/
 
 # Environment
-config/local.env
+config/secret.env
 
 # Logs
 *.log

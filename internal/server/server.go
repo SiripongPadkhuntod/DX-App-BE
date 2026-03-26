@@ -14,10 +14,45 @@ import (
 	"github.com/youruser/dexter-transport/internal/app/service"
 	db_client "github.com/youruser/dexter-transport/internal/infrastructure/db-client"
 	"github.com/youruser/dexter-transport/internal/router"
+	"github.com/youruser/dexter-transport/docs"
+	"gopkg.in/yaml.v3"
 )
 
 type Server struct {
 	engine *gin.Engine
+}
+
+// Config yaml struct matches dev.yaml format
+type DevConfig struct {
+	Env []struct {
+		Name  string `yaml:"name"`
+		Value string `yaml:"value"`
+	} `yaml:"env"`
+}
+
+func loadConfig() {
+	appEnv := os.Getenv("APP_ENV")
+	// If APP_ENV is explicitly set to dev, load dev.yaml
+	if appEnv == "dev" {
+		log.Println("Loading configuration from dev.yaml")
+		data, err := os.ReadFile("config/dev.yaml")
+		if err != nil {
+			log.Fatalf("Failed to read dev.yaml: %v", err)
+		}
+		var config DevConfig
+		if err := yaml.Unmarshal(data, &config); err != nil {
+			log.Fatalf("Failed to parse dev.yaml: %v", err)
+		}
+		for _, item := range config.Env {
+			os.Setenv(item.Name, item.Value)
+		}
+	} else {
+		// Default to local.env
+		log.Println("Loading configuration from local.env")
+		if err := godotenv.Load("config/local.env"); err != nil {
+			log.Println("Warning: local.env file not found, using default environment variables")
+		}
+	}
 }
 
 func NewServer() *Server {
@@ -39,12 +74,20 @@ func NewServer() *Server {
 }
 
 func (s *Server) Run() {
-	// 0. Load Environment Variables
-	if err := godotenv.Load("config/local.env"); err != nil {
-		log.Println("Warning: .env file not found, using default environment variables")
+	// 0. Load Environment Variables dynamically
+	loadConfig()
+
+	// 1. Configure Swagger based on Environment Variables
+	if host := os.Getenv("API_DOCS_HOST"); host != "" {
+		docs.SwaggerInfo.Host = host
+	}
+	if schema := os.Getenv("API_DOCS_SCHEMA"); schema != "" {
+		docs.SwaggerInfo.Schemes = []string{schema}
+	} else {
+		docs.SwaggerInfo.Schemes = []string{"http"} // Default to http for local
 	}
 
-	// 1. Initial Database Connection with new infrastructure client
+	// 2. Initial Database Connection with new infrastructure client
 	db, err := db_client.NewPostgresClient(db_client.PostgresConfig{
 		Host:     getEnv("DB_HOST", "localhost"),
 		Port:     getEnv("DB_PORT", "5432"),

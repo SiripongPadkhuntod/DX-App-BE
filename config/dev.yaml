@@ -1,0 +1,30 @@
+env:
+  # Server
+  - name: PORT
+    value: '8080'
+  - name: SERVICE_NAME
+    value: 'dexter-transport-service'
+  - name: SERVICE_DESCRIPTION
+    value: 'DX transport Service'
+  - name: GIN_MODE
+    value: 'release'
+  - name: SHUTDOWN_TIMEOUT
+    value: '300s'
+  - name: RUN_LOCAL
+    value: 'true'
+  - name: DEBUG_MODE
+    value: 'true'
+  - name: CONSOLE_FORMAT
+    value: 'true'
+  - name: APP_ENV
+    value: 'nonprod'
+
+  # Swagger / Docs
+  - name: API_DOCS
+    value: 'true'
+  - name: API_DOCS_SCHEMA
+    value: 'https'
+  - name: API_DOCS_HOST
+    value: 'dx-app-be-dev.onrender.com'
+  - name: API_DOCS_VERSION
+    value: 'v1.0.0'
