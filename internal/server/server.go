@@ -32,9 +32,10 @@ type DevConfig struct {
 
 func loadConfig() {
 	appEnv := os.Getenv("APP_ENV")
-	// If APP_ENV is explicitly set to dev, load dev.yaml
-	if appEnv == "dev" {
-		log.Println("Loading configuration from dev.yaml")
+
+	switch appEnv {
+	case "dev", "nonprod", "development":
+		log.Printf("Loading configuration from dev.yaml (APP_ENV=%s)", appEnv)
 		data, err := os.ReadFile("config/dev.yaml")
 		if err != nil {
 			log.Fatalf("Failed to read dev.yaml: %v", err)
@@ -44,10 +45,13 @@ func loadConfig() {
 			log.Fatalf("Failed to parse dev.yaml: %v", err)
 		}
 		for _, item := range config.Env {
-			os.Setenv(item.Name, item.Value)
+			// Don't overwrite env vars already set by the host (e.g. Render dashboard)
+			if os.Getenv(item.Name) == "" {
+				os.Setenv(item.Name, item.Value)
+			}
 		}
-	} else {
-		// Default to local.env + secret.env
+	default:
+		// Local development: load local.env + secret.env
 		log.Println("Loading configuration from local.env")
 		if err := godotenv.Load("config/local.env"); err != nil {
 			log.Println("Warning: local.env file not found, using default environment variables")

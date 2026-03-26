@@ -17,7 +17,7 @@ env:
   - name: CONSOLE_FORMAT
     value: 'true'
   - name: APP_ENV
-    value: 'nonprod'
+    value: 'dev'
 
   # Swagger / Docs
   - name: API_DOCS
