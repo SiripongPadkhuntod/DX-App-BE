@@ -3,14 +3,16 @@ package server
 import (
 	"log"
 	"os"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/youruser/dexter-transport/internal/app/handler"
 	"github.com/youruser/dexter-transport/internal/app/port"
 	postgres_repository "github.com/youruser/dexter-transport/internal/app/repository/postgres-repository"
 	"github.com/youruser/dexter-transport/internal/app/service"
-	"github.com/youruser/dexter-transport/internal/infrastructure/db-client"
+	db_client "github.com/youruser/dexter-transport/internal/infrastructure/db-client"
 	"github.com/youruser/dexter-transport/internal/router"
 )
 
@@ -19,8 +21,20 @@ type Server struct {
 }
 
 func NewServer() *Server {
+	engine := gin.Default()
+
+	// CORS Configuration
+	engine.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"}, // Adjust in production
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	return &Server{
-		engine: gin.Default(),
+		engine: engine,
 	}
 }
 

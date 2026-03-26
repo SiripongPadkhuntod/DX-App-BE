@@ -7,7 +7,7 @@ import (
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres" // register the postgres driver
-	_ "github.com/golang-migrate/migrate/v4/source/file"     // register the file source
+	_ "github.com/golang-migrate/migrate/v4/source/file"       // register the file source
 	"github.com/joho/godotenv"
 )
 
@@ -24,8 +24,14 @@ func main() {
 	dbPass := getEnv("DB_PASSWORD", "password")
 	dbName := getEnv("DB_NAME", "dexter_db")
 
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		dbUser, dbPass, host, dbPort, dbName)
+	connStr := fmt.Sprintf(
+		"postgres://%s:%s@%s:%s/%s?sslmode=require",
+		dbUser,
+		dbPass,
+		host,
+		dbPort,
+		dbName,
+	)
 
 	m, err := migrate.New(
 		"file://./db/migration",
